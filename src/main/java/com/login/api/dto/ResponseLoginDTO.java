@@ -1,5 +1,5 @@
 package com.login.api.dto;
 
-public record ResponseLoginDTO(String token, String message) {
+public record ResponseLoginDTO(String token, String message, String role) {
     
 }

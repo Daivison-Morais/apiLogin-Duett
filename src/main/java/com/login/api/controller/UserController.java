@@ -10,22 +10,16 @@ import com.login.api.controller.config.response.ResponseHandler;
 import com.login.api.dto.AuthenticationDTO;
 import com.login.api.dto.BodyUserDTO;
 import com.login.api.dto.ResponseLoginDTO;
-import com.login.api.infra.security.TokenService;
 import com.login.api.model.UserModel;
 import com.login.api.services.UserService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -35,44 +29,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
     private UserService service;
-
-    @Autowired
-    TokenService tokenService;
 
     @PostMapping("/login")
     @Operation(summary = "Permite autenticar usuários")
 
     public ResponseEntity<Object> login(@RequestBody @Valid AuthenticationDTO data) {
         try {
-            var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), 
-            data.password());
-        var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        var token = tokenService.generateToken((UserModel) auth.getPrincipal());
+            ResponseLoginDTO userToken = service.loginService(data);
+            return ResponseEntity.ok(userToken);
 
-        return ResponseEntity.ok(new ResponseLoginDTO(token,
-         "Login realizado com sucesso!"));
         } catch (Exception e) {
             e.printStackTrace();
             Map<String, String> error = new HashMap<>();
 
             error.put("error", e.getMessage());
-            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
         }
-        
+
     }
 
     @PostMapping("/signup")
     @Operation(summary = "Realiza cadastro de novos usuários")
     public ResponseEntity<Object> SignUp(@RequestBody @Valid BodyUserDTO req) {
         try {
-            UserModel user = service.createSignUpService(req);
-            return ResponseHandler.responseBuilder(
-                "Cadastro realizado com sucesso!", HttpStatus.CREATED, user);
+            service.createSignUpService(req);
+            return ResponseEntity.ok("Cadastro realizado com sucesso!");
         } catch (Exception e) {
             e.printStackTrace();
             Map<String, String> error = new HashMap<>();
@@ -89,7 +72,7 @@ public class UserController {
         List<UserModel> Users = service.listUsers();
 
         return ResponseHandler.responseBuilder(
-            " listados com sucesso!", HttpStatus.OK, Users);
+                " listados com sucesso!", HttpStatus.OK, Users);
     }
 
     @DeleteMapping("/{id}")
@@ -109,5 +92,5 @@ public class UserController {
         }
 
     }
-    
+
 }
