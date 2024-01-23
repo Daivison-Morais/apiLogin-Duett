@@ -32,14 +32,14 @@ public class UserService {
         return user;
     }
     
-    public UserModel deleteUserById(String id) throws ApiExceptionMessage {
+    public void deleteUserById(String id) throws ApiExceptionMessage {
         if (id == null) throw new ApiExceptionMessage(HttpStatus.NOT_FOUND, "Usuário não encontrado!");
         
         UserModel user = repository.findById(id).orElse(null);
         if (user == null) throw new ApiExceptionMessage(HttpStatus.NOT_FOUND, "Usuário não encontrado!");
         
         repository.deleteById(id);
-        return user;
+        
     }
 
     

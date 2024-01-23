@@ -2,7 +2,6 @@ package com.login.api.model;
 
 import java.util.Collection;
 import java.util.List;
-
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,6 +10,8 @@ import com.login.api.enums.UserRole;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,34 +36,35 @@ public class UserModel implements UserDetails {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.role = role;
         this.cpf = cpf;
+        this.role = role;
     }
 
-    @Id
+    @Id()
+    @Column(name ="id")
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @NotBlank
-    @Column(length = 100, nullable = false, updatable = false, unique = true)
+    @Column(name = "name",length = 100, nullable = false, updatable = false, unique = true)
     private String name;
 
     @Email
     @NotBlank
-    @Column(length = 50, nullable = false, updatable = false, unique = true)
+    @Column(name ="email", length = 50, nullable = false, updatable = false, unique = true)
     private String email;
 
     @Nullable
-    @Column(nullable = false, updatable = false)
+    @Column(name ="password", nullable = false, updatable = false)
     private String password;
 
     @CPF()
-    @Column(length = 11, nullable = false, updatable = false, unique = true)
+    @Column(name ="cpf", length = 11, nullable = false, updatable = false, unique = true)
     private String cpf;
 
-
+    @Enumerated(EnumType.STRING)
     @Nullable
-    @Column()
+    @Column(name = "role")
     private UserRole role;
 
     @Override

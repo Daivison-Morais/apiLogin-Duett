@@ -14,6 +14,7 @@ import com.login.api.infra.security.TokenService;
 import com.login.api.model.UserModel;
 import com.login.api.services.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 
 import java.util.HashMap;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("auth")
+@RequestMapping("api")
 public class UserController {
 
     @Autowired
@@ -43,6 +44,8 @@ public class UserController {
     TokenService tokenService;
 
     @PostMapping("/login")
+    @Operation(summary = "Permite autenticar usuários")
+
     public ResponseEntity<Object> login(@RequestBody @Valid AuthenticationDTO data) {
         try {
             var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), 
@@ -64,6 +67,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
+    @Operation(summary = "Realiza cadastro de novos usuários")
     public ResponseEntity<Object> SignUp(@RequestBody @Valid BodyUserDTO req) {
         try {
             UserModel user = service.createSignUpService(req);
@@ -78,7 +82,9 @@ public class UserController {
         }
     }
 
-    @GetMapping
+    @GetMapping("listUsers")
+    @Operation(summary = "Lista todos os usuários usuários")
+
     public ResponseEntity<Object> ListUsers() {
         List<UserModel> Users = service.listUsers();
 
@@ -87,6 +93,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Permite à administradores deletar usuários")
     public ResponseEntity<Object> deleteUser(@PathVariable String id) {
 
         try {

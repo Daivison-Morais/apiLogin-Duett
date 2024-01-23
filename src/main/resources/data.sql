@@ -1,0 +1,3 @@
+INSERT INTO signup (id, name, email, cpf, password, role) VALUES ('1', 'Daivison', 'daivison@gmail.com', '35551911012', '$2a$10$yI8C3QTHy6/532Or5qygNeqf9IxfnEuPjqEdvdnqgmoX1aOHwsvb6', 'ADMIN')
+INSERT INTO signup (id, name, email, cpf, password, role) VALUES ('2', 'Sandla', 'sandla@gmail.com', '25885309078', '$2a$10$5KBGwchNzI3kpQJugISuLO3WBlJ2WxP5uWMMXnNTWt6a67YatBmTS', 'USER')
+INSERT INTO signup (id, name, email, cpf, password, role) VALUES ('3', 'Marco', 'marco@gmail.com', '87806685006', '$2a$10$Q1XNYxU0RA.k718aTn6FaOZ6zE7jWHLbx1MO/MRhltOdNaa0LIcM2', 'USER')

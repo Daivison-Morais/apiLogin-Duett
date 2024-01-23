@@ -27,16 +27,27 @@ public class SecurityConfigurations {
       return httpSecurity
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .headers(headers -> headers
+                        .frameOptions(frameOptions -> frameOptions.sameOrigin()))
             .authorizeHttpRequests(authorize -> authorize
-                  .requestMatchers(HttpMethod.POST, "/auth/signup").permitAll()
-                  .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                  //.requestMatchers(HttpMethod.GET, "/auth").permitAll()
-                  .requestMatchers(HttpMethod.DELETE, "/auth/{id}").hasRole("ADMIN")
+                  .requestMatchers(HttpMethod.POST, "/api/signup").permitAll()
+                  .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
+                  .requestMatchers("/h2/**").permitAll()
+                  .requestMatchers(HttpMethod.DELETE, "/api/{id}").hasRole("ADMIN")
+                  .requestMatchers(AUT_WHITELIST).permitAll()
                   .anyRequest().authenticated()
                   )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
    }
+
+   private static final String[] AUT_WHITELIST = {
+      "/api/v1/auth/**",
+      "/v3/api-docs/**",
+      "/v3/api-docs.yalm",
+      "/swagger-ui/**",
+      "/swagger-ui.html"
+   };
 
    @Bean
    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
