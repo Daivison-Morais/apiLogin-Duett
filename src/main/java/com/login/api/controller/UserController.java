@@ -65,7 +65,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("listUsers")
+    @GetMapping("/listUsers")
     @Operation(summary = "Lista todos os usuários usuários")
 
     public ResponseEntity<Object> ListUsers() {
