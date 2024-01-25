@@ -18,7 +18,10 @@ https://github.com/Daivison-Morais/login-Duett
 ## Rode Localmente
 Clone o projeto, va para apiLogin-Duett/src/main/java/com/login/api/ApiApplication.java
 rode clicando em 'run'
-
+ou na raís do projeto rode:
+```bash
+java -jar /target/api-0.0.1-SNAPSHOT.jar
+```
 </br>
 ## Swagger
 Após rodar, cole no browser:
