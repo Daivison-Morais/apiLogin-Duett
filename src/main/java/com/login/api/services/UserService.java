@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.login.api.controller.config.exception.ApiExceptionMessage;
 import com.login.api.dto.AuthenticationDTO;
 import com.login.api.dto.BodyUserDTO;
+import com.login.api.dto.ChangePasswordDTO;
 import com.login.api.dto.ResponseLoginDTO;
 import com.login.api.infra.security.TokenService;
 import com.login.api.model.UserModel;
@@ -31,15 +32,19 @@ public class UserService {
         UserModel user = repository.findByEmail(data.email());
         if (user == null) throw new ApiExceptionMessage(HttpStatus.BAD_REQUEST, "Email não encontrado!");
         String roleUser = user.getRole().toString();
+        String email = user.getEmail();
 
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(),
                 data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
         var token = tokenService.generateToken((UserModel) auth.getPrincipal());
 
-        ResponseLoginDTO userToken = new ResponseLoginDTO(token,
-                "Login realizado com sucesso!", roleUser);
+        ResponseLoginDTO userToken = new ResponseLoginDTO(token, email, roleUser);
         return userToken;
+    }
+    
+    public void ChangePasswordService(ChangePasswordDTO data) throws ApiExceptionMessage {
+      
     }
 
     public List<UserModel> listUsers() {

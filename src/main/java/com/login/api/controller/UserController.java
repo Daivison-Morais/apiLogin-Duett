@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.login.api.controller.config.response.ResponseHandler;
 import com.login.api.dto.AuthenticationDTO;
 import com.login.api.dto.BodyUserDTO;
+import com.login.api.dto.ChangePasswordDTO;
 import com.login.api.dto.ResponseLoginDTO;
 import com.login.api.model.UserModel;
 import com.login.api.services.UserService;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @CrossOrigin(origins = "*")
@@ -64,6 +66,21 @@ public class UserController {
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping("/password")
+    @Operation(summary = "Realiza a troca de senhas")
+    public ResponseEntity<Object> ChangePassword(@RequestBody @Valid ChangePasswordDTO data) {
+        try {
+            service.ChangePasswordService(data);
+            return ResponseEntity.ok("Senhas trocadas com sucesso!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Map<String, String> error = new HashMap<>();
+
+            error.put("error", e.getMessage());
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
+    } 
 
     @GetMapping("/listUsers")
     @Operation(summary = "Lista todos os usuários usuários")
